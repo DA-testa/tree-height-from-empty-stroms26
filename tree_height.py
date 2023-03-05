@@ -15,33 +15,44 @@ def compute_height(n, parents):
         else:
             adj_list[parents[i]].append(i)
 
-    # rekursija
+    # recursion
     def dfs(node):
         height = 0
         for child in adj_list[node]:
             height = max(height, dfs(child))
         return height + 1
 
-    # aprekina augstumu
+    # calculate height
     return dfs(root)
 
 
 def main():
-    # I vai F
+    # get input type (I or F)
     input_type = input().strip().upper()
+
+    # handle keyboard input
     if input_type == 'I':
         n = int(input().strip())
         parents = list(map(int, input().strip().split()))
         print(compute_height(n, parents))
+
+    # handle file input
     elif input_type == 'F':
         filename = input().strip()
         if 'a' not in filename:
-            with open(filename, 'r') as f:
-                n = int(f.readline().strip())
-                parents = list(map(int, f.readline().strip().split()))
-                print(compute_height(n, parents))
+            try:
+                with open(filename, 'r') as f:
+                    n = int(f.readline().strip())
+                    parents = list(map(int, f.readline().strip().split()))
+                    print(compute_height(n, parents))
+            except FileNotFoundError:
+                print(f'Error: File {filename} not found')
+        else:
+            print('Error: File name cannot contain letter "a"')
+
+    # handle invalid input
     else:
-        print('Invalid input')
+        print('Error: Invalid input')
 
 
     # implement input form keyboard and from files
